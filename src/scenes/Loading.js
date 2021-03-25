@@ -7,6 +7,8 @@ export default class Loading extends Scene {
     constructor() {
         super();
 
+        this.name = 'loading';
+
         this._addBackground();
         this._addLogo();
         this._addLoadingBar();

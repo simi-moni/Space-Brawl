@@ -8,6 +8,8 @@ export default class Countdown extends Scene {
     constructor() {
         super();
 
+        this.name = 'countdown';
+
         this._addBackground();
         const planets = new Planets();
         this.addChild(planets);

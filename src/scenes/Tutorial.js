@@ -7,6 +7,8 @@ export default class Tutorial extends Scene {
     constructor() {
         super();
 
+        this.name = 'tutorial';
+
         this._addBackground();
         this._addFooter();
         this._addButton();
