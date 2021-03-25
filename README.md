@@ -1,5 +1,6 @@
-# ⚙ PIXI Boilerplate
-This project is used as a boilerplate for tasks in the "PIXI.js" course in Booost. Takes care of loading assets and intiliazing the scene. Just drop your images and sounds, set your viewport size and start coding. This is a fork of [PIXI.js Boilerplate](https://github.com/dopamine-lab/pixi-boilerplate)
+# Space Brawl
+Implementation of Space brawl project for Booost. This app uses GSAP for the animations and Pixi.
+
 
 Includes:
 * 📦 Bundling via Webpack
