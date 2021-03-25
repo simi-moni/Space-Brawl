@@ -1,6 +1,10 @@
 import Splash from './scenes/Splash';
 import Play from './scenes/Play';
 import { Container } from 'pixi.js';
+import Loading from './scenes/Loading';
+import Win from './scenes/Win';
+import Tutorial from './scenes/Tutorial';
+import Countdown from './scenes/Countdown';
 
 /**
  * Main game stage, manages scenes/levels.
@@ -28,8 +32,17 @@ export default class Game extends Container {
   async start() {
     await this.switchScene(Splash, { scene: 'splash' });
     await this.currentScene.finish;
-
-    this.switchScene(Play, { scene: 'play' });
+    await this.switchScene(Loading, { scene: 'loading' });
+    this.currentScene.once(Loading.events.loaded, async () => {
+      await this.switchScene(Tutorial, { scene: 'tutorial' });
+      this.currentScene.once(Tutorial.events.finish, async () => {
+        await this.switchScene(Countdown, { scene: 'countdown' });
+        await this.currentScene.once(Countdown.events.startGame, () => {
+          this.switchScene(Play, { scene: 'play' });
+        });
+      })
+      // this.switchScene(Win, { scene: 'win' });
+    })
   }
 
   /**
