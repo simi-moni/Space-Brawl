@@ -3,6 +3,10 @@ import Scene from './Scene';
 import Footer from '../components/Footer';
 import { gsap } from 'gsap/all';
 
+/**
+ * Tutorial which shows how to play the games via slides
+ * @class
+ */
 export default class Tutorial extends Scene {
     constructor() {
         super();
@@ -28,6 +32,9 @@ export default class Tutorial extends Scene {
         }
     }
 
+    /**
+     * @private
+     */
     _addBackground() {
         this._background = new Sprite.from('play-scene');
         this._background.width = window.innerWidth;
@@ -37,6 +44,9 @@ export default class Tutorial extends Scene {
         this.addChild(this._background);
     }
 
+    /**
+     * @private
+     */
     _addFooter() {
         const footer = new Footer();
         footer.x = - window.innerWidth / 2;
@@ -44,6 +54,12 @@ export default class Tutorial extends Scene {
         this.addChild(footer);
     }
 
+    /**
+     * Method for adding images for the keys
+     * @param {string} textureName 
+     * @param {string} type 
+     * @param {Number} angle 
+     */
     _addKey(textureName, type, angle) {
         this.removeChild(this._frame);
         this._frame = new Sprite.from(textureName);
@@ -81,6 +97,10 @@ export default class Tutorial extends Scene {
         }
     }
 
+    /**
+     * Method for adding description
+     * @param {string} desc 
+     */
     _addDescription(desc) {
         this.removeChild(this._description);
         this._description = new Graphics();
@@ -109,6 +129,10 @@ export default class Tutorial extends Scene {
             .to(text, { alpha: 1 }, '<')
     }
 
+    /**
+     * @private
+     * Adding button next
+     */
     _addButton() {
         this._button = new Graphics();
         this._button.beginFill(0xffffff);
@@ -132,6 +156,9 @@ export default class Tutorial extends Scene {
         this._button.on('pointerdown', () => this._buttonHandler());
     }
 
+    /**
+     * @private
+     */
     _buttonHandler() {
         let obj = this.data;
         if (typeof obj !== 'undefined') {

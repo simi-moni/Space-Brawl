@@ -4,6 +4,11 @@ import Scene from './Scene';
 import Footer from '../components/Footer';
 import Planets from '../components/Planets';
 
+
+/**
+ * Countdown before the play scene
+ * @class
+ */
 export default class Countdown extends Scene {
     constructor() {
         super();
@@ -23,6 +28,9 @@ export default class Countdown extends Scene {
         }
     }
 
+    /**
+     * @private
+     */
     _addFooter() {
         const footer = new Footer();
         footer.x = - window.innerWidth / 2;
@@ -30,6 +38,9 @@ export default class Countdown extends Scene {
         this.addChild(footer);
     }
 
+    /**
+     * @private
+     */
     _addBackground() {
         this._background = new Sprite.from('play-scene');
         this._background.width = window.innerWidth;
@@ -37,7 +48,11 @@ export default class Countdown extends Scene {
         this._background.anchor.set(0.5);
         this.addChild(this._background);
     }
-
+    /**
+     * Draws the countdown circle
+     * @param {Number} number 
+     * @returns 
+     */
     _drawCircle(number) {
         this.removeChild(this._container);
         this._container = new Container();
@@ -66,8 +81,16 @@ export default class Countdown extends Scene {
         this.addChild(this._container);
         return this._container;
     }
-
+    /**
+     * private timer
+     * @param {Number} ms 
+     * @returns 
+     */
     timer(ms) { return new Promise(res => setTimeout(res, ms)); }
+    /**
+     * @private
+     * Changing the countdown numbers
+     */
     async count() {
         for (let i = 3; i > 0; i--) {
             let container = this._drawCircle(i);

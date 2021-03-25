@@ -3,6 +3,10 @@ import Scene from './Scene';
 import Footer from '../components/Footer';
 import { gsap } from 'gsap/all';
 
+/**
+ * End scene of the game which shows who won
+ * @class
+ */
 export default class Win extends Scene {
     constructor() {
         super();
@@ -14,6 +18,9 @@ export default class Win extends Scene {
         this._addButton();
     }
 
+    /**
+     * @private
+     */
     _addFooter() {
         const footer = new Footer();
         footer.x = - window.innerWidth / 2;
@@ -21,6 +28,9 @@ export default class Win extends Scene {
         this.addChild(footer);
     }
 
+    /**
+     * @private
+     */
     _addWinSprite() {
         const wins = new Sprite.from('wins');
         wins.y = this._winner.height / 2 + 100;
@@ -28,6 +38,9 @@ export default class Win extends Scene {
         this._winner.addChild(wins);
     }
 
+    /**
+     * @private
+     */
     _addWinner(winner) {
         this._winner = new Sprite.from(winner);
         this._winner.anchor.set(0.5);
@@ -37,6 +50,9 @@ export default class Win extends Scene {
         this.addChild(this._winner);
     }
 
+    /**
+     * @private
+     */
     _addBackground() {
         this._background = new Sprite.from('play-scene');
         this._background.width = window.innerWidth;
@@ -46,6 +62,10 @@ export default class Win extends Scene {
         this.addChild(this._background);
     }
 
+    /**
+     * @private
+     * Adding button for replay
+     */
     _addButton() {
         this._button = new Graphics();
         this._button.beginFill(0xffffff);

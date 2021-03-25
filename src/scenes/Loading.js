@@ -3,6 +3,10 @@ import Footer from '../components/Footer';
 import Scene from './Scene';
 import { gsap } from 'gsap/all';
 
+/**
+ * Loading scene before everything else
+ * @class
+ */
 export default class Loading extends Scene {
     constructor() {
         super();
@@ -22,6 +26,9 @@ export default class Loading extends Scene {
         }
     }
 
+    /**
+     * @private
+     */
     _addFooter() {
         const footer = new Footer();
         footer.x = - window.innerWidth / 2;
@@ -30,6 +37,9 @@ export default class Loading extends Scene {
         this.addChild(footer);
     }
 
+    /**
+     * @private
+     */
     _addBackground() {
         this._background = new Sprite.from('play-scene');
         this._background.width = window.innerWidth;
@@ -40,6 +50,9 @@ export default class Loading extends Scene {
         this.addChild(this._background);
     }
 
+    /**
+     * @private
+     */
     _addLogo() {
         this._logo = new Sprite.from('ooo');
         this._logo.anchor.set(0.5);
@@ -47,6 +60,9 @@ export default class Loading extends Scene {
         this.addChild(this._logo);
     }
 
+    /**
+     * @private
+     */
     _addLoadingBar() {
         this._loadingBar = new Graphics();
         this._loadingBar.lineStyle(2, 0xffffff, 1, 0);
@@ -59,6 +75,9 @@ export default class Loading extends Scene {
         this.addChild(this._loadingBar);
     }
 
+    /**
+     * @private
+     */
     _addHighlight() {
         const highlight = new Graphics();
         highlight.beginFill(0xffffff);

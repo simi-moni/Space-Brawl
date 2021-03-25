@@ -1,5 +1,8 @@
 import { Container, Sprite } from 'pixi.js';
 
+/**
+ * Class used for creating the planets
+ */
 export default class Planets extends Container {
     constructor() {
         super();

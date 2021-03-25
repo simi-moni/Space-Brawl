@@ -18,6 +18,11 @@ export default class Rover extends Container {
         this._upperShield = this._addShield(active, upperShield);//active -upper 
     }
 
+    /**
+     * Creating the body of the rover
+     * @param {object} roverConfig 
+     * @returns 
+     */
     _createBody({ texture, x, y, angle }) {
         this._body = new Sprite.from(texture);
         this._body.y = y;
@@ -34,6 +39,10 @@ export default class Rover extends Container {
         this.addChild(this._rocket);
     }
 
+    /**
+     * Adding the shadow of the rover
+     * @param {object} shadowConfig 
+     */
     _addShadow({ texture, x, y, angle }) {
         this._shadow = new Sprite.from(texture);
         this._shadow.y = y;
@@ -42,6 +51,10 @@ export default class Rover extends Container {
         this.addChild(this._shadow);
     }
 
+    /**
+     * Adding health bar
+     * @param {object} healthBarConfig 
+     */
     _addHealthBar({ texture, x, y }) {
         this._healthBar = new Sprite.from(texture);
         this._healthBar.y = y;
@@ -54,6 +67,12 @@ export default class Rover extends Container {
         this.addChild(this._healthBar);
     }
 
+    /**
+     * Adding shield
+     * @param {string} texture 
+     * @param {object} shieldConfig 
+     * @returns 
+     */
     _addShield({ texture }, { x, y, angle }) {
         // this._body.removeChild(this._shield);
         this._shield = new Sprite.from(texture);
@@ -71,6 +90,10 @@ export default class Rover extends Container {
             this._swapShield();
     }
 
+    /**
+     * @private
+     * used for swapping the shield
+     */
     _swapShield() {
         const active = this._upperShield;
         const inactive = this._lowerShield;
@@ -80,10 +103,13 @@ export default class Rover extends Container {
             .to(inactive, { x: active.x, y: active.y, angle: active.angle + 90, duration: 0.3, }, '<');
     }
 
+    /**
+     * used to fire the rocket
+     */
     _fireRocket() {
-        gsap.registerPlugin(MotionPathPlugin);
+        /*gsap.registerPlugin(MotionPathPlugin);
         this._createRocket();
-        /*  gsap.to(this._rocket, {
+          gsap.to(this._rocket, {
               duration: 5,
               motionPath: {
                   path: 'M1 185C50.3333 111 184.6 -28.4 327 6C505 49 455 335 914 330',
