@@ -8,14 +8,21 @@ import { gsap } from 'gsap/all';
  * @class
  */
 export default class Win extends Scene {
-    constructor() {
+    constructor({ winner }) {
         super();
 
         this._addBackground();
         this._addFooter();
-        this._addWinner('2');
+        this._addWinner(winner);
         this._addWinSprite();
+        this._addStars();
         this._addButton();
+    }
+
+    static get events() {
+        return {
+            replay: 'REPLAY',
+        }
     }
 
     /**
@@ -85,6 +92,38 @@ export default class Win extends Scene {
         text.y = this._button.height / 2;
         text.anchor.set(0.5);
         this._button.addChild(text);
+
+        this._button.on('pointerdown', () => this.emit(Win.events.replay));
+    }
+
+    /**
+     * @private creating star sprite
+     * @param {Number} x 
+     * @param {Number} y 
+     * @param {Number} scale 
+     * @param {Number} angle 
+     * @returns star
+     */
+    _createStar(x, y, scale, angle) {
+        const star = new Sprite.from('star');
+        star.x = x;
+        star.y = y;
+        star.scale.set(scale);
+        star.angle = angle;
+
+        return star;
+    }
+
+    /**
+     * @private adding created stars to the scene
+     */
+    _addStars() {
+        const star = this._createStar(-500, -400, 0.80, 35);
+        const star1 = this._createStar(420, -350, 0.35, 40);
+        const star2 = this._createStar(650, -50, 0.35, 20);
+        const star3 = this._createStar(-900, -40, 0.25, 35);
+
+        this.addChild(star, star1, star2, star3);
     }
 
 }
