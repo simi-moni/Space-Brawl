@@ -1,13 +1,13 @@
 import { Container, Graphics, Sprite } from 'pixi.js';
-import { gsap, MotionPathPlugin } from 'gsap/all';
+import { gsap } from 'gsap/all';
+import Rocket from './Rocket';
 
 export default class Rover extends Container {
-    constructor({ body, shadow, healthBar, }, { active, inactive, upperShield, lowerShield }) {
+    constructor({ body, shadow, healthBar, }, { active, inactive, upperShield, lowerShield }, { paths }) {
         super();
 
         this.name = 'rover';
 
-        // this._health = health;
         this._upperDefault = upperShield;
         this._lowerDefault = lowerShield;
 
@@ -16,6 +16,14 @@ export default class Rover extends Container {
         this._body = this._createBody(body);
         this._lowerShield = this._addShield(inactive, lowerShield);//shield inactive-lower
         this._upperShield = this._addShield(active, upperShield);//active -upper 
+        this._addHitBoxes();
+        this._rocket = this._createRocket(paths);
+    }
+
+    static get events() {
+        return {
+            no_hp: 'NO_HP',
+        }
     }
 
     /**
@@ -31,12 +39,6 @@ export default class Rover extends Container {
         this.addChild(this._body);
 
         return this._body;
-    }
-
-    _createRocket() {
-        this._rocket = new Sprite.from('rocket');
-        this._rocket.angle = 60;
-        this.addChild(this._rocket);
     }
 
     /**
@@ -68,20 +70,55 @@ export default class Rover extends Container {
     }
 
     /**
+     * @private handling the reduce of health
+     */
+    _loseHealth() {
+        const lostHP = 120 * 0.1;
+
+        if (this._health.width === 12) {
+            this._health.width -= lostHP;
+            this.emit(Rover.events.no_hp)
+        } else {
+            this._health.width -= lostHP;
+        }
+    }
+
+    /**
      * Adding shield
      * @param {string} texture 
      * @param {object} shieldConfig 
      * @returns 
      */
     _addShield({ texture }, { x, y, angle }) {
-        // this._body.removeChild(this._shield);
-        this._shield = new Sprite.from(texture);
-        this._shield.anchor.set(0.5);
-        this._shield.y = y;
-        this._shield.x = x;
-        this._shield.angle = angle;
-        this._body.addChild(this._shield);
-        return this._shield;
+        const shield = new Sprite.from(texture);
+        shield.name = texture;
+        shield.anchor.set(0.5);
+        shield.y = y;
+        shield.x = x;
+        shield.angle = angle;
+        this._body.addChild(shield);
+        return shield;
+    }
+
+    /**
+     * @private adding hitboxes
+     */
+    _addHitBoxes() {
+        /*this._lowerShield.hitArea = new PIXI.Rectangle(this._lowerShield.x-50, this._lowerShield.y-100, 20, 210);
+          this._upperShield.hitArea = new PIXI.Rectangle(this._upperShield.x -100, this._upperShield.y -50, 210, 20);*/
+        this.lowerHitBox = new Graphics();
+        this.lowerHitBox.beginFill(0x0000ff);
+        this.lowerHitBox.drawRect(-110, -80, 50, 230);
+        this.lowerHitBox.alpha = 0;
+        this.lowerHitBox.endFill();
+        this._body.addChild(this.lowerHitBox);
+
+        this.upperHitBox = new Graphics();
+        this.upperHitBox.beginFill(0x0000ff);
+        this.upperHitBox.drawRect(-80, -110, 230, 50);
+        this.upperHitBox.alpha = 0;
+        this.upperHitBox.endFill();
+        this._body.addChild(this.upperHitBox);
     }
 
     _isSwappable({ key }) {
@@ -97,6 +134,7 @@ export default class Rover extends Container {
     _swapShield() {
         const active = this._upperShield;
         const inactive = this._lowerShield;
+        [this._lowerShield.name, this._upperShield.name] = [this._upperShield.name, this._lowerShield.name];
         this._tl = gsap.timeline();
         this._tl
             .to(active, { x: inactive.x, y: inactive.y, angle: inactive.angle - 90, duration: 0.3, })
@@ -104,18 +142,17 @@ export default class Rover extends Container {
     }
 
     /**
-     * used to fire the rocket
+     * @private getter for the active part of the shield
      */
-    _fireRocket() {
-        /*gsap.registerPlugin(MotionPathPlugin);
-        this._createRocket();
-          gsap.to(this._rocket, {
-              duration: 5,
-              motionPath: {
-                  path: 'M1 185C50.3333 111 184.6 -28.4 327 6C505 49 455 335 914 330',
-                  autoRotate: 90,
-              }
-          });*/
+    _getActiveShield() {
+        return this._lowerShield.name === 'shield-active' ? this.lowerHitBox : this.upperHitBox
+    }
 
+    _createRocket(paths) {
+        const rocket = new Rocket(paths);
+        rocket.alpha = 0;
+
+        this.addChild(rocket);
+        return rocket;
     }
 }
